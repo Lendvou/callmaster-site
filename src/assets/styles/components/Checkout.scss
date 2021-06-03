@@ -1,0 +1,81 @@
+.checkout {
+	width: 100%;
+	color: $maintext;
+
+	&__wrapper {
+		width: 100%;
+		border-radius: 8px;
+		padding: 22px 20px;
+		background-color: white;
+		box-shadow: rgba(128, 163, 182, 0.098) 0px 0px 20px;
+		&:not(:last-child) {
+			margin-bottom: 10px;
+		}
+	}
+
+	&__title {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		h3 {
+			font-size: 24px;
+			@include font-montserrat-bold;
+		}
+		button {
+			font-size: 14px;
+			color: $bluetext;
+			height: 40px;
+			cursor: pointer;
+			margin: 6px 0;
+			padding: 0px 12px;
+			background: rgba(128, 163, 182, 0.1);
+			border: 1px solid transparent;
+			border-radius: 4px;
+			text-decoration: none;
+			outline: 0px;
+			transition: all 0.25s ease 0s;
+			@include font-montserrat-semibold;
+
+			&::before {
+				content: url(../../icons/back.svg);
+			}
+		}
+	}
+
+	&__row {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		border-bottom: 1px solid rgba(128, 163, 182, 0.1);
+		padding: 16px 0px;
+		&:last-child {
+			padding: 8px 0;
+		}
+	}
+	&__column {
+		width: 50%;
+		padding: 0px 5px;
+		display: flex;
+		flex-direction: column;
+		&:only-child {
+			width: 100%;
+		}
+	}
+	&__label {
+		font-size: 14px;
+		line-height: 20px;
+		color: $bluetext;
+	}
+	&__value {
+		font-size: 16px;
+		line-height: 24px;
+		@include font-montserrat-semibold;
+	}
+	&__notice {
+		font-size: 10px;
+		line-height: 12px;
+		color: $infotext;
+	}
+}

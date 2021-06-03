@@ -1,0 +1,60 @@
+.processing {
+	background-color: #fafafa;
+	height: calc(100vh);
+	padding-top: 16px;
+
+	&__form {
+		max-width: 568px;
+		margin: 10px auto;
+	}
+
+	.Collapsible {
+		width: 100%;
+		margin-top: 10px;
+		border-radius: 8px;
+		padding: 18px 20px;
+		background: white;
+		box-shadow: rgba(128, 163, 182, 0.098) 0px 0px 20px;
+		color: $bluetext;
+
+		&__trigger {
+			cursor: pointer;
+			font-size: 14px;
+			width: 100%;
+			display: flex;
+			position: relative;
+			@include font-montserrat-semibold;
+
+			&::before {
+				content: url(../../icons/pulse.svg);
+				margin-right: 5px;
+			}
+			&::after {
+				content: url(../../icons/down-arrow.svg);
+				position: absolute;
+				top: 2px;
+				right: 5px;
+				width: 10px;
+				height: 10px;
+			}
+
+			&.is-open.Collapsible__trigger::after {
+				transform: rotateX(180deg);
+				top: 8px;
+			}
+		}
+
+		&__contentInner {
+			p {
+				font-size: 13px;
+				color: $bluetext;
+				margin-top: 10px;
+				& > span {
+					margin-left: 5px;
+					color: $maintext;
+					@include font-montserrat-semibold;
+				}
+			}
+		}
+	}
+}

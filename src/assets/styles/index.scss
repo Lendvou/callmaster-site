@@ -1,0 +1,18 @@
+// Global
+@import './global/variables.scss';
+@import './global/media.scss';
+@import './global/fonts.scss';
+@import './global/helpers.scss';
+
+@import './global/global.scss';
+
+// Components
+@import './components/Header.scss';
+@import './components/ExchangeForm.scss';
+@import './components/CurrencyCard.scss';
+@import './components/Checkout.scss';
+@import './components/TransactionDetails.scss';
+
+// Pages
+@import './pages/Landing.scss';
+@import './pages/Processing.scss';

@@ -1,0 +1,5 @@
+@mixin media-notebook {
+  @media only screen and (max-width: "1366px") {
+    @content
+  }
+}

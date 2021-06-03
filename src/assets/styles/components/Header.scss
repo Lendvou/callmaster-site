@@ -1,0 +1,27 @@
+.header {
+	@include font-montserrat-bold;
+
+	.mainlogo::after {
+		content: url(../../icons/logo-thrupny.svg);
+	}
+
+	&__wrapper {
+		max-width: 1168px;
+		height: 90px;
+		margin: auto;
+		display: flex;
+		align-items: center;
+		font-size: 16px;
+	}
+
+	&__landing {
+		background-color: transparent;
+		color: white;
+		@include font-montserrat-semibold;
+	}
+	&__processing {
+		background-color: #fafafa;
+		border-bottom: 1px solid rgba(128, 163, 182, 0.1);
+		color: $maintext;
+	}
+}

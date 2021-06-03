@@ -1,0 +1,105 @@
+.details {
+	width: 100%;
+	color: $maintext;
+	text-align: center;
+
+	&__transactionId {
+		margin: 0 auto !important;
+		display: inline-flex;
+		align-items: center;
+		font-size: 14px;
+		line-height: 16px;
+		background: white;
+		border-radius: 32px;
+		padding: 10px 15px;
+		border: 2px solid rgba(128, 163, 182, 0.1);
+	}
+	&__transactionId &__label {
+		line-height: inherit;
+	}
+	&__transactionId &__value {
+		line-height: inherit;
+	}
+	&__clip-icon {
+		&::after {
+			content: url(../../icons/copy-to-clipboard.svg);
+			cursor: pointer;
+		}
+		&:hover:after {
+			opacity: 0.7;
+		}
+	}
+
+	&__label {
+		font-size: 14px;
+		line-height: 20px;
+		color: $bluetext;
+	}
+	&__value {
+		font-size: 16px;
+		line-height: 24px;
+		padding: 0 5px;
+		@include font-montserrat-semibold;
+	}
+	&__copy {
+		font-size: 14px;
+		line-height: 16px;
+		color: $green;
+		margin-top: 5px;
+		cursor: pointer;
+		@include font-montserrat-semibold;
+		&::before {
+			content: url(../../icons/copy-to-clipboard.svg);
+			position: relative;
+			top: 3px;
+			margin-right: 3px;
+		}
+		&:hover {
+			opacity: 0.7;
+		}
+	}
+
+	&__description {
+		font-size: 14px;
+		line-height: 20px;
+		margin: 10px 0 20px;
+	}
+
+	&__wrapper {
+		width: 100%;
+		border-radius: 8px;
+		padding: 22px 20px;
+		background-color: white;
+		box-shadow: rgba(128, 163, 182, 0.098) 0px 0px 20px;
+		&:not(:last-child) {
+			margin-bottom: 10px;
+		}
+	}
+
+	&__qrcode {
+		border: 2px solid rgba(128, 163, 182, 0.1);
+		padding: 10px;
+		align-self: center;
+	}
+
+	&__row {
+		display: flex;
+		flex-direction: column;
+		&:not(:last-child) {
+			margin-bottom: 15px;
+		}
+	}
+
+	&__timer {
+		color: $bluetext;
+		font-size: 16px;
+		line-height: 24px;
+		@include font-montserrat-semibold;
+	}
+	&__timerDescription {
+		font-size: 12px;
+		line-height: 16px;
+		color: black;
+		@include font-montserrat-semibold;
+	}
+}

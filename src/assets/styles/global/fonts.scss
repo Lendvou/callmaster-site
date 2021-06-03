@@ -1,0 +1,21 @@
+@mixin font($name, $format, $alt-format: $format) {
+	@font-face {
+		font-family: $name;
+		src: url('../../fonts/' + $name + '.' + $format) format($alt-format);
+		font-weight: normal;
+		font-style: normal;
+	}
+}
+
+@include font(montserrat, 'ttf', 'truetype');
+@mixin font-montserrat {
+	font-family: 'Montserrat', sans-serif;
+}
+@include font(montserrat-bold, 'ttf', 'truetype');
+@mixin font-montserrat-bold {
+	font-family: 'Montserrat-bold', sans-serif;
+}
+@include font(montserrat-semibold, 'ttf', 'truetype');
+@mixin font-montserrat-semibold {
+	font-family: 'Montserrat-semibold', sans-serif;
+}

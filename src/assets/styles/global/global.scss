@@ -1,0 +1,67 @@
+html {
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body {
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	@include font-montserrat;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	outline: none;
+}
+
+button {
+	outline: none;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+.green-button {
+	position: relative;
+	width: 100%;
+	height: 48px;
+	line-height: 46px;
+	font-size: 14px;
+	color: white;
+	text-align: center;
+	cursor: pointer;
+	margin: 12px 0px;
+	padding: 0px 12px;
+	background: $green;
+	border-width: 1px;
+	border-style: solid;
+	border-color: $green;
+	border-image: initial;
+	border-radius: 4px;
+	text-decoration: none;
+	outline: 0px;
+	transition: all 0.25s ease 0s;
+	@include font-montserrat-semibold;
+}
+
+.main-layout {
+	background: linear-gradient(113.61deg, #f6f6f6 50.8%, white 34.8%) !important;
+}
