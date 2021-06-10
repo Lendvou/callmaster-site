@@ -1,20 +1,33 @@
-import React, { useEffect, ReactNode } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, ReactNode, useState } from 'react'
+import { useTypedDispatch } from 'store'
 
 import Header from 'components/Header'
+import Chat from 'components/Chat'
 
-import { setCurrencies } from 'store/actions/currenciesActions'
+import { handleAutoLogin } from 'store/user/thunkActions'
 
 export const MainLayout = (props: { children: ReactNode }) => {
-	const dispatch = useDispatch()
+	const dispatch = useTypedDispatch()
+
+	const [isLoading, setIsLoading] = useState<boolean>(true)
+
 	useEffect(() => {
-		dispatch(setCurrencies())
+		const init = async () => {
+			// @ts-ignore
+			await dispatch(handleAutoLogin())
+			setIsLoading(false)
+		}
+		init()
 	}, [dispatch])
 
-	return (
+	return isLoading ? (
+		<div>Loading...</div>
+	) : (
 		<div className="main-layout">
 			<Header />
 			{props.children}
+
+			<Chat />
 		</div>
 	)
 }

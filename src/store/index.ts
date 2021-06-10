@@ -1,17 +1,18 @@
-import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
-import rootReducer from 'store/reducers'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { configureStore } from '@reduxjs/toolkit'
 
-const composeEnhancers =
-	(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+import rootReducer from './rootReducer'
 
-const configureStore = () => {
-	const middlewares = [thunk]
+import { RootState } from 'store/types'
 
-	return createStore(
-		rootReducer,
-		composeEnhancers(applyMiddleware(...middlewares))
-	)
-}
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware()
+  },
+})
 
-export default configureStore
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
+export const useTypedDispatch: () => typeof store.dispatch = useDispatch
+
+export default store

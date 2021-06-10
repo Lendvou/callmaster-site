@@ -16,7 +16,8 @@ const Header = () => {
 		>
 			<div className="header__wrapper">
 				<Link to="/">
-					<span className="mainlogo" />
+					<div className="mainlogo" />
+					{/* <span className="mainlogo" /> */}
 				</Link>
 			</div>
 		</div>

@@ -1,9 +1,23 @@
 .header {
 	@include font-montserrat-bold;
 
-	.mainlogo::after {
-		content: url(../../icons/logo-thrupny.svg);
+	.mainlogo {
+		width: 180px;
+		height: 120px;
+		transform: scale(0.7);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-image: url(../../icons/coin-with.png);
+		background-size: cover;
 	}
+	// .mainlogo::after {
+	// 	content: url(../../icons/coin-dungeon.jpg);
+	// 	// content: url(../../icons/logo-thrupny.svg);
+	// 	background-size: cover;
+	// 	background-size: 100% 100%;
+	// 	// display: flex;
+	// }
 
 	&__wrapper {
 		max-width: 1168px;

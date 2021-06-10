@@ -7,3 +7,12 @@ export interface ICurrencyOption {
 }
 
 export type CurrentBlock = 'exchange' | 'checkout' | 'details'
+
+export interface IUser {
+	id: string
+}
+
+export interface UserCredentials {
+	email: string
+	password: string
+}
