@@ -1,79 +1,159 @@
-import React, { useEffect, useState } from 'react'
-import ChatBox, { ChatFrame } from 'react-chat-plugin'
-import apiClient from 'utils/apiClient'
-
-const initialMessages = [
-	{
-		// id: 1,
-		text: 'This is my message',
-		timestamp: new Date().getTime(),
-		type: 'text',
-		author: {
-			username: 'Jru kakahi',
-			id: 1,
-			avatarUrl: 'https://image.flaticon.com/icons/svg/2446/2446032.svg',
-		},
-	},
-	{
-		// id: 1,
-		text: 'This is his message',
-		timestamp: new Date().getTime(),
-		type: 'text',
-		author: {
-			username: 'Jru kakahi',
-			id: 2,
-			avatarUrl: 'https://image.flaticon.com/icons/svg/2446/2446032.svg',
-		},
-	},
-]
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import ChatBox, { ChatFrame } from 'react-chat-plugin';
+import apiClient from 'utils/apiClient';
+import { useTypedSelector } from 'store';
+import { IMessage } from 'types';
+import { arrayHasItems } from 'utils';
+import UploadFile from 'components/UploadFile';
+import { setTimeout } from 'timers';
+import Calls from 'components/Calls';
 
 const Chat = () => {
-	const [messages, setMessages] = useState<any[]>(initialMessages)
+  const chatRef = useRef<null>(null);
 
-	const sendMessage = (mes: any) => {
-		console.log('send message', mes)
-		const newMessage = {
-			// id: 1,
-			text: mes,
-			timestamp: new Date().getTime(),
-			type: 'text',
-			author: {
-				username: 'Jru kakahi',
-				id: 1,
-				avatarUrl: 'https://image.flaticon.com/icons/svg/2446/2446032.svg',
-			},
-		}
+  const chatId = useTypedSelector((state) => state.core.chatId);
+  const user = useTypedSelector((state) => state.user.user);
+  const currentChat = useTypedSelector((state) => state.core.currentChat);
 
-		const newList = messages.concat(newMessage)
-		setMessages(newList)
-	}
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
-	useEffect(() => {
-		const createChat = async () => {}
+  const messagesList = useMemo(() => {
+    return messages.map((item) => {
+      const username =
+        item.authorRole === 'operator' ? item.user.firstName + item.user.lastName : 'Вы';
+      const userAvatarPath = item.user.avatar?.path;
+      const photos = arrayHasItems(item.photos)
+        ? item.photos.map((photo) => ({
+            type: 'URL',
+            title: <img src={photo.path} alt={photo.filename} className="chat__photo" />,
+            payload: photo.path,
+          }))
+        : [];
 
-		const fetchMessages = async () => {
-			const query = {
-				$limit: 100,
-				$sort: { createdAt: -1 },
-				chatId: 3,
-			}
-			const result = await apiClient.service('messages').find({ query })
+      return {
+        text: item.text,
+        timestamp: new Date(item.createdAt).getTime(),
+        type: 'text',
+        author: {
+          username,
+          id: item.user._id,
+          avatarUrl: userAvatarPath,
+        },
+        buttons: photos,
+      };
+    });
+  }, [messages]);
 
-			setMessages(result.data)
-		}
-	}, [])
+  const sendMessage = async (mes: any) => {
+    const data = {
+      chatId,
+      userId: user._id,
+      text: mes,
+      type: 'text',
+      authorRole: 'client',
+    };
+    await apiClient.service('messages').create(data);
+  };
+  const uploadFile = async (photoId: string) => {
+    console.log('uplaod file', photoId);
 
-	return (
-		<div className="chat">
-			<ChatBox
-				messages={messages}
-				userId={1}
-				onSendMessage={sendMessage}
-				width={'400px'}
-				height={'600px'}
-			/>
-		</div>
-	)
-}
+    const data = {
+      chatId,
+      userId: user._id,
+      text: '',
+      type: 'photo',
+      authorRole: 'client',
+      photosIds: [photoId],
+    };
+    await apiClient.service('messages').create(data);
+  };
 
-export default Chat
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      // @ts-ignore
+      chatRef?.current?.scrollToBottom?.();
+    }, 500);
+  };
+
+  useEffect(() => {
+    const receiveMessage = (message: IMessage) => {
+      console.log('receive message', message);
+
+      if (message.chatId === chatId) {
+        const newMessages = messages.concat(message);
+        setMessages(newMessages);
+        scrollToBottom();
+      }
+    };
+
+    apiClient.service('messages').on('created', receiveMessage);
+
+    return () => {
+      apiClient.service('messages').removeListener('created', receiveMessage);
+    };
+  }, [messages, chatId]);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const query = {
+        $limit: 100,
+        $sort: { createdAt: 1 },
+        chatId,
+      };
+      const result = await apiClient.service('messages').find({ query });
+      console.log('fetch messages', result);
+
+      setMessages(result.data);
+      scrollToBottom();
+    };
+
+    if (chatId) {
+      fetchMessages();
+    }
+  }, [chatId]);
+
+  return (
+    <div className="chat">
+      <div className="chat__header">
+        <div className="chat__left">
+          {currentChat?.operator?.avatar?.path && (
+            <img
+              src={currentChat.operator.avatar.path}
+              alt="avatar"
+              className="chat__operator-avatar"
+            />
+          )}
+          <span className="chat__name">
+            {currentChat?.operator?.firstName} {currentChat?.operator?.lastName}
+          </span>
+        </div>
+
+        <Calls />
+        {/* <PhoneOutlined
+          className={clsx('chat__phone', {
+            'chat__phone--close': false,
+          })}
+          onClick={scrollToBottom}
+          // onClick={currentCall ? () => currentCall.close() : onCallUser}
+        /> */}
+      </div>
+
+      <ChatBox
+        ref={chatRef}
+        messages={messagesList}
+        userId={user._id}
+        onSendMessage={sendMessage}
+        width={'400px'}
+        height={'500px'}
+      />
+
+      <UploadFile
+        className="chat__input-send"
+        onUploadFile={uploadFile}
+        // onClick={() => sendMessage()}
+      />
+    </div>
+  );
+};
+
+export default Chat;
