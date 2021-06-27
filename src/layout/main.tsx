@@ -48,9 +48,12 @@ export const MainLayout = (props: { children: ReactNode }) => {
 
       const { data: idleOperators }: Paginated<IUser> = await apiClient.service('users').find({
         query: {
-          role: 'operator',
-          isOnline: true,
-          isBusy: false,
+          role: {
+            $in: ['operator', 'admin'],
+            // 'operator'
+          },
+          // isOnline: true,
+          // isBusy: false,
         },
       });
       console.log('operatotottoto', idleOperators);
